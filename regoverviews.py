@@ -49,10 +49,24 @@ def main():
                     cursor.execute(stmt_str, [args.a + '%'])
                     table = cursor.fetchall()
                     printtable(table)
+
                 elif args.t:
-                    stmt_str += "AND title LIKE ? "
+                    teststr = '\'\\\''
+                    stmt_str += f"AND title LIKE ? ESCAPE {teststr} "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
-                    cursor.execute(stmt_str, ['%' + args.t + '%'])
+                    new_argst = args.t
+                    # checks if the characters are in the string, then will insert an
+                    ## escape \ if necessary
+                    # only loops if the characters are in the string to save mem, otherwise
+                    ## will skip over
+                    if '_' in args.t or '%' in args.t:
+                        new_argst = ''
+                        for c in args.t:
+                            if c == '_' or c == '%':
+                                new_argst += f'\\{c}'
+                            else:
+                                new_argst += c
+                    cursor.execute(stmt_str, ['%' + new_argst + '%'])
                     table = cursor.fetchall()
                     printtable(table)
 
