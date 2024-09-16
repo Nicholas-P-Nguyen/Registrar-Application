@@ -25,7 +25,13 @@ def main():
                 stmt_str += "FROM classes, crosslistings, courses "
                 stmt_str += "WHERE courses.courseid = classes.courseid AND courses.courseid = crosslistings.courseid "
 
-                if args.d:
+                if args.n and args.d:
+                    stmt_str += "AND coursenum LIKE ? AND dept LIKE ? "
+                    stmt_str += "ORDER BY dept ASC, coursenum ASC"
+                    cursor.execute(stmt_str, ['%' + args.n + '%', args.d])
+                    table = cursor.fetchall()
+                    printtable(table)
+                elif args.d:
                     stmt_str += "AND dept = ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     cursor.execute(stmt_str, [args.d])
@@ -34,7 +40,7 @@ def main():
                 elif args.n:
                     stmt_str += "AND coursenum LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
-                    cursor.execute(stmt_str, [args.n + '%'])
+                    cursor.execute(stmt_str, ['%' + args.n + '%'])
                     table = cursor.fetchall()
                     printtable(table)
                 elif args.a:
@@ -49,6 +55,7 @@ def main():
                     cursor.execute(stmt_str, ['%' + args.t + '%'])
                     table = cursor.fetchall()
                     printtable(table)
+
 
     except Exception as ex:
         print(ex, file=sys.stderr)
