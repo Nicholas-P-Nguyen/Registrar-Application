@@ -44,9 +44,15 @@ def main():
                     table = cursor.fetchall()
                     printtable(table)
                 elif args.t:
-                    stmt_str += "AND title LIKE ? "
+                    stmt_str += "AND title LIKE ? ESCAPE '\' "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
-                    cursor.execute(stmt_str, ['%' + args.t + '%'])
+                    for c in args.t:
+                        new_argst = ''
+                        if c == '_' or c == '%':
+                            new_argst += f'/{c}'
+                        else:
+                            new_argst += c
+                        cursor.execute(stmt_str, ['%' + args.t + '%'])
                     table = cursor.fetchall()
                     printtable(table)
 
