@@ -4,6 +4,8 @@ import argparse
 import sys
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
+# End of the escape clause -> '\'
+ESCAPE = '\'\\\''
 
 def main():
     try:
@@ -25,16 +27,36 @@ def main():
                 stmt_str += "FROM classes, crosslistings, courses "
                 stmt_str += "WHERE courses.courseid = classes.courseid AND courses.courseid = crosslistings.courseid "
 
-                if args.n and args.d:
+                if args.d and args.a and args.n and args.t:
+                    stmt_str += "AND dept LIKE ? AND area LIKE ? AND title LIKE ? AND coursenum LIKE ? "
+                    stmt_str += "ORDER BY dept ASC, coursenum ASC"
+
+                    parameters = [
+                        args.d + '%',
+                        args.a + '%',
+                        '%' + args.t + '%',
+                        '%' + args.n + '%'
+                    ]
+
+                    cursor.execute(stmt_str, parameters)
+                    table = cursor.fetchall()
+                    printtable(table)
+                elif args.n and args.d:
                     stmt_str += "AND coursenum LIKE ? AND dept LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
-                    cursor.execute(stmt_str, ['%' + args.n + '%', args.d])
+
+                    parameters = [
+                        '%' + args.n + '%',
+                        args.d + '%'
+                    ]
+
+                    cursor.execute(stmt_str, parameters)
                     table = cursor.fetchall()
                     printtable(table)
                 elif args.d:
-                    stmt_str += "AND dept = ? "
+                    stmt_str += "AND dept LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
-                    cursor.execute(stmt_str, [args.d])
+                    cursor.execute(stmt_str, [args.d + '%'])
                     table = cursor.fetchall()
                     printtable(table)
                 elif args.n:
@@ -50,9 +72,7 @@ def main():
                     table = cursor.fetchall()
                     printtable(table)
                 elif args.t:
-                    # End of the escape clause -> '\'
-                    escape = '\'\\\''
-                    stmt_str += f"AND title LIKE ? ESCAPE {escape} "
+                    stmt_str += f"AND title LIKE ? ESCAPE {ESCAPE} "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     # checks if the special characters are in the string, then will insert an
                     ## escape \ if necessary
@@ -72,7 +92,11 @@ def main():
                         cursor.execute(stmt_str, ['%' + args.t + '%'])
                         table = cursor.fetchall()
                         printtable(table)
-
+                else:
+                    stmt_str += "ORDER BY dept ASC, coursenum ASC"
+                    cursor.execute(stmt_str)
+                    table = cursor.fetchall()
+                    printtable(table)
 
     except Exception as ex:
         print(ex, file=sys.stderr)
