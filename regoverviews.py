@@ -39,8 +39,6 @@ def main():
                     ]
 
                     cursor.execute(stmt_str, parameters)
-                    table = cursor.fetchall()
-                    printtable(table)
                 elif args.n and args.d:
                     stmt_str += "AND coursenum LIKE ? AND dept LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
@@ -51,26 +49,18 @@ def main():
                     ]
 
                     cursor.execute(stmt_str, parameters)
-                    table = cursor.fetchall()
-                    printtable(table)
                 elif args.d:
                     stmt_str += "AND dept LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     cursor.execute(stmt_str, [args.d + '%'])
-                    table = cursor.fetchall()
-                    printtable(table)
                 elif args.n:
                     stmt_str += "AND coursenum LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     cursor.execute(stmt_str, ['%' + args.n + '%'])
-                    table = cursor.fetchall()
-                    printtable(table)
                 elif args.a:
                     stmt_str += "AND area LIKE ? "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     cursor.execute(stmt_str, [args.a + '%'])
-                    table = cursor.fetchall()
-                    printtable(table)
                 elif args.t:
                     stmt_str += f"AND title LIKE ? ESCAPE {ESCAPE} "
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
@@ -78,6 +68,8 @@ def main():
                     ## escape \ if necessary
                     # only loops if the characters are in the string to save mem, otherwise
                     ## will skip over
+
+                    # MAYBE CHANGE THIS IF STATEMENT TO CHECK IF THE CHARACTERS ARE ASCII
                     if '_' in args.t or '%' in args.t:
                         new_argst = ''
                         for char in args.t:
@@ -86,23 +78,20 @@ def main():
                             else:
                                 new_argst += char
                         cursor.execute(stmt_str, ['%' + new_argst + '%'])
-                        table = cursor.fetchall()
-                        printtable(table)
                     else:
                         cursor.execute(stmt_str, ['%' + args.t + '%'])
-                        table = cursor.fetchall()
-                        printtable(table)
                 else:
                     stmt_str += "ORDER BY dept ASC, coursenum ASC"
                     cursor.execute(stmt_str)
-                    table = cursor.fetchall()
-                    printtable(table)
+
+                table = cursor.fetchall()
+                printTable(table)
 
     except Exception as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)
 
-def printtable(table):
+def printTable(table):
     for row in table:
         line = f"{row[0]:>6} {row[1]:>4} {row[2]:>6} {row[3]:>4} {row[4]:<49}"
         while len(line) > 73:
