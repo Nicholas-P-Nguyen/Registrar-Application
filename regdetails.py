@@ -12,15 +12,15 @@ def getClassDetails(classId, cursor):
     cursor.execute(stmt_str, [classId])
     row = cursor.fetchone()
     if row == None:
-        raise Exception(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists")
-
+        print(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists", file=sys.stderr)
+        sys.exit(1)
 
     class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
 
     print('-------------')
     print('Class Details')
     print('-------------')
-    
+
     for i in range(len(class_fields)):
         print(class_fields[i], row[i])
 
