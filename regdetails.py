@@ -2,9 +2,85 @@ import contextlib
 import sqlite3
 import argparse
 import sys
-import textwrap
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
+
+def getClassDetails(classId, cursor):
+    print('-------------')
+    print('Class Details')
+    print('-------------')
+
+    stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
+    stmt_str += "FROM classes WHERE classid = ?"
+
+    cursor.execute(stmt_str, [classId])
+    row = cursor.fetchone()
+
+    print('Class Id:', row[0])
+    print('Days:', row[1])
+    print('Start time:', row[2])
+    print('End time:', row[3])
+    print('Building:', row[4])
+    print('Room:', row[5])
+
+    print('-------------')
+    print('Course Details')
+    print('-------------')
+    print('Course Id:', row[6])
+
+#-----------------------------------------------------------------------------------------------------------------------
+
+def getCourseDetails(classId, cursor):
+    # Getting the dept and course number
+    stmt_str_dept = "SELECT dept, coursenum "
+    stmt_str_dept += "FROM classes, crosslistings "
+    stmt_str_dept += "WHERE classid = ? "
+    stmt_str_dept += "AND classes.courseid = crosslistings.courseid "
+    stmt_str_dept += "ORDER BY dept ASC, coursenum ASC"
+
+    cursor.execute(stmt_str_dept, [classId])
+    table = cursor.fetchall()
+    for row in table:
+        print(f'Dept and Number: {row[0]} {row[1]}')
+
+    # Getting the area, title, descrip and prereq
+    stmt_str_course = "SELECT area, title, descrip, prereqs "
+    stmt_str_course += "FROM classes, courses "
+    stmt_str_course += "WHERE classid = ? "
+    stmt_str_course += "AND classes.courseid = courses.courseid "
+
+    details = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
+    cursor.execute(stmt_str_course, [classId])
+    row = cursor.fetchone()
+    for i in range(len(row)):
+        if len(details[i] + row[i]) > 72:
+            printDetails(details[i] + row[i])
+        else:
+            print(details[i] + row[i])
+
+    # Getting the professors
+    stmt_str_prof = "SELECT profname "
+    stmt_str_prof += "FROM classes, coursesprofs, profs "
+    stmt_str_prof += "WHERE classid = ? "
+    stmt_str_prof += "AND classes.courseid = coursesprofs.courseid "
+    stmt_str_prof += "AND coursesprofs.profid = profs.profid "
+
+    cursor.execute(stmt_str_prof, [classId])
+    table = cursor.fetchall()
+
+    for row in table:
+        print(f'Professor: {row[0]}')
+
+#-----------------------------------------------------------------------------------------------------------------------
+
+def printDetails(description):
+    while len(description) > 73:
+        break_index = description.rfind(' ', 0, 74)
+        print(description[:break_index])
+        description = ' ' * 3 + description[break_index + 1:]
+    print(description)
+
+#-----------------------------------------------------------------------------------------------------------------------
 
 def main():
     try:
@@ -22,59 +98,7 @@ def main():
         print(ex, file=sys.stderr)
         sys.exit(1)
 
-def getClassDetails(classId, cursor):
-    print('-------------')
-    print('Class Details')
-    print('-------------')
-
-    stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum "
-    stmt_str += "FROM classes WHERE classid = ?"
-
-    cursor.execute(stmt_str, [classId])
-    table = cursor.fetchall()
-
-    for row in table:
-        print('Class Id:', row[0])
-        print('Days:', row[1])
-        print('Start time:', row[2])
-        print('End time:', row[3])
-        print('Building:', row[4])
-        print('Room:', row[5])
-
-def getCourseDetails(classId, cursor):
-    print('-------------')
-    print('Course Details')
-    print('-------------')
-
-    stmt_str = "SELECT classes.courseid, dept, coursenum, area, title, descrip, prereqs, profname "
-    stmt_str += "FROM courses, crosslistings, profs, coursesprofs, classes "
-    stmt_str += "WHERE classid = ? AND classes.courseid = courses.courseid "
-    stmt_str += "AND classes.courseid = crosslistings.courseid AND classes.courseid = coursesprofs.courseid "
-    stmt_str += "AND coursesprofs.profid = profs.profid "
-    stmt_str += "ORDER BY dept ASC, coursenum ASC"
-
-    cursor.execute(stmt_str, [classId])
-    table = cursor.fetchall()
-
-    details = ['Course Id:', 'Department and Number:', 'Area:', 'Title:', 'Description:', 'Prerequisites:' 'Professor:']
-
-    for row in table:
-        print('Course Id:', row[0])
-        print(f'Department and Number: {row[1]} {row[2]}')
-        print('Area:', row[3])
-        print('Title:', row[4])
-        printDetails('Description:' + row[5])
-        print('Prerequisites:', row[6])
-        print('Professor:', row[7])
-
-def printDetails(description):
-    while len(description) > 73:
-        break_index = description.rfind(' ', 0, 74)
-        print(description[:break_index])
-        description = ' ' * 3 + description[break_index + 1:]
-    print(description)
-
-
+#-----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     main()

@@ -7,6 +7,17 @@ DATABASE_URL = 'file:reg.sqlite?mode=rw'
 # End of the escape clause -> '\'
 ESCAPE = '\'\\\''
 
+def printTable(table):
+    for row in table:
+        line = f"{row[0]:>6} {row[1]:>4} {row[2]:>6} {row[3]:>4} {row[4]:<49}"
+        while len(line) > 73:
+            break_index = line.rfind(' ', 0, 74)
+            print(line[:break_index])
+            line = ' ' * 24 + line[break_index + 1:]
+        print(line)
+
+#-----------------------------------------------------------------------------------------------------------------------
+
 def main():
     try:
         with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
@@ -91,14 +102,7 @@ def main():
         print(ex, file=sys.stderr)
         sys.exit(1)
 
-def printTable(table):
-    for row in table:
-        line = f"{row[0]:>6} {row[1]:>4} {row[2]:>6} {row[3]:>4} {row[4]:<49}"
-        while len(line) > 73:
-            break_index = line.rfind(' ', 0, 74)
-            print(line[:break_index])
-            line = ' ' * 24 + line[break_index + 1:]
-        print(line)
+#-----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     main()
