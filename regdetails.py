@@ -16,12 +16,10 @@ def getClassDetails(classId, cursor):
     cursor.execute(stmt_str, [classId])
     row = cursor.fetchone()
 
-    print('Class Id:', row[0])
-    print('Days:', row[1])
-    print('Start time:', row[2])
-    print('End time:', row[3])
-    print('Building:', row[4])
-    print('Room:', row[5])
+    class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
+
+    for i in range(len(class_fields)):
+        print(class_fields[i], row[i])
 
     print('-------------')
     print('Course Details')
@@ -49,14 +47,14 @@ def getCourseDetails(classId, cursor):
     stmt_str_course += "WHERE classid = ? "
     stmt_str_course += "AND classes.courseid = courses.courseid "
 
-    details = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
+    course_fields = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
     cursor.execute(stmt_str_course, [classId])
     row = cursor.fetchone()
     for i in range(len(row)):
-        if len(details[i] + row[i]) > 72:
-            printDetails(details[i] + row[i])
+        if len(course_fields[i] + row[i]) > 72:
+            printDetails(course_fields[i] + row[i])
         else:
-            print(details[i] + row[i])
+            print(course_fields[i] + row[i])
 
     # Getting the professors
     stmt_str_prof = "SELECT profname "
