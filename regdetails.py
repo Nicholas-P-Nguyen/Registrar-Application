@@ -5,34 +5,16 @@ import sys
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
 
-def getClassDetails(classId, cursor):
-    stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
-    stmt_str += "FROM classes WHERE classid = ?"
-
-    cursor.execute(stmt_str, [classId])
-    row = cursor.fetchone()
-    if row == None:
-        print(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists", file=sys.stderr)
-        sys.exit(1)
-
-    class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
-
-    print('-------------')
-    print('Class Details')
-    print('-------------')
-
-    for i in range(len(class_fields)):
-        print(class_fields[i], row[i])
-
-    print('-------------')
-    print('Course Details')
-    print('-------------')
-    print('Course Id:', row[6])
+def printCourseDetails(description):
+    while len(description) > 72:
+        break_index = description.rfind(' ', 0, 73)
+        print(description[:break_index])
+        description = ' ' * 3 + description[break_index + 1:]
+    print(description)
 
 #-----------------------------------------------------------------------------------------------------------------------
 
-def getCourseDetails(classId, cursor):
-    # Getting the dept and course number
+def getCourseDeptAndNum(classId, cursor):
     stmt_str_dept = "SELECT dept, coursenum "
     stmt_str_dept += "FROM classes, crosslistings "
     stmt_str_dept += "WHERE classid = ? "
@@ -44,7 +26,9 @@ def getCourseDetails(classId, cursor):
     for row in table:
         print(f'Dept and Number: {row[0]} {row[1]}')
 
-    # Getting the area, title, descrip and prereq
+#-----------------------------------------------------------------------------------------------------------------------
+
+def getCourseDetails(classId, cursor):
     stmt_str_course = "SELECT area, title, descrip, prereqs "
     stmt_str_course += "FROM classes, courses "
     stmt_str_course += "WHERE classid = ? "
@@ -53,13 +37,16 @@ def getCourseDetails(classId, cursor):
     course_fields = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
     cursor.execute(stmt_str_course, [classId])
     row = cursor.fetchone()
+
     for i in range(len(row)):
         if len(course_fields[i] + row[i]) > 72:
-            printDetails(course_fields[i] + row[i])
+            printCourseDetails(course_fields[i] + row[i])
         else:
             print(course_fields[i] + row[i])
 
-    # Getting the professors
+#-----------------------------------------------------------------------------------------------------------------------
+
+def getCourseProfs(classId, cursor):
     stmt_str_prof = "SELECT profname "
     stmt_str_prof += "FROM classes, coursesprofs, profs "
     stmt_str_prof += "WHERE classid = ? "
@@ -74,12 +61,29 @@ def getCourseDetails(classId, cursor):
 
 #-----------------------------------------------------------------------------------------------------------------------
 
-def printDetails(description):
-    while len(description) > 73:
-        break_index = description.rfind(' ', 0, 74)
-        print(description[:break_index])
-        description = ' ' * 3 + description[break_index + 1:]
-    print(description)
+def getClassDetails(classId, cursor):
+    stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
+    stmt_str += "FROM classes WHERE classid = ?"
+
+    cursor.execute(stmt_str, [classId])
+    row = cursor.fetchone()
+
+    if row is None:
+        print(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists", file=sys.stderr)
+        sys.exit(1)
+
+    print('-------------')
+    print('Class Details')
+    print('-------------')
+
+    class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
+    for i in range(len(class_fields)):
+        print(class_fields[i], row[i])
+
+    print('-------------')
+    print('Course Details')
+    print('-------------')
+    print('Course Id:', row[6])
 
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -93,7 +97,9 @@ def main():
                 args = parser.parse_args()
 
                 getClassDetails(args.classid, cursor)
+                getCourseDeptAndNum(args.classid, cursor)
                 getCourseDetails(args.classid, cursor)
+                getCourseProfs(args.classid, cursor)
 
     except Exception as ex:
         print(ex, file=sys.stderr)
