@@ -6,18 +6,21 @@ import sys
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
 
 def getClassDetails(classId, cursor):
-    print('-------------')
-    print('Class Details')
-    print('-------------')
-
     stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
     stmt_str += "FROM classes WHERE classid = ?"
 
     cursor.execute(stmt_str, [classId])
     row = cursor.fetchone()
+    if row == None:
+        raise Exception(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists")
+
 
     class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
 
+    print('-------------')
+    print('Class Details')
+    print('-------------')
+    
     for i in range(len(class_fields)):
         print(class_fields[i], row[i])
 
@@ -86,7 +89,7 @@ def main():
             with contextlib.closing(connection.cursor()) as cursor:
                 # Help menu
                 parser = argparse.ArgumentParser(description='Registrar application: show details about a class')
-                parser.add_argument('classid', type=str, help='the id of the class whose details should be shown')
+                parser.add_argument('classid', type=int, help='the id of the class whose details should be shown')
                 args = parser.parse_args()
 
                 getClassDetails(args.classid, cursor)
