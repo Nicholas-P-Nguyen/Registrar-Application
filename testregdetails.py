@@ -49,6 +49,7 @@ def main():
     exec_command(program, '9977')
     exec_command(program, '10188')
     exec_command(program, '9012')
+    exec_command(program, '01010444')
 
 
 if __name__ == '__main__':
