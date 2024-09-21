@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-python regoverviews.py -d COS
+python ref_regoverviews.pyc -d COS
 ClsId Dept CrsNum Area Title
 ----- ---- ------ ---- -----
  8291  COS    116   ST The Computational Universe
@@ -45,7 +45,7 @@ ClsId Dept CrsNum Area Title
                        Methods in Networking
 Exit status = 0
 ------------------------------------------------------------------------
-python regoverviews.py -d COS -a qr -n 2 -t intro
+python ref_regoverviews.pyc -d COS -a qr -n 2 -t intro
 ClsId Dept CrsNum Area Title
 ----- ---- ------ ---- -----
  8308  COS    217   QR Introduction to C_Science Programming Systems
