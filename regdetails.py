@@ -80,9 +80,9 @@ def getClassDetails(classId, cursor):
     for i in range(len(class_fields)):
         print(class_fields[i], row[i])
 
-    print('-------------')
+    print('--------------')
     print('Course Details')
-    print('-------------')
+    print('--------------')
     print('Course Id:', row[6])
 
 #-----------------------------------------------------------------------------------------------------------------------

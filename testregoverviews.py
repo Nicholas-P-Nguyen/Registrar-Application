@@ -41,11 +41,36 @@ def main():
         sys.exit(1)
 
     program = sys.argv[1]
+    exec_command(program, '')
 
-    exec_command(program, '-d COS')
+    # Testing subsets of 4
     exec_command(program, '-d COS -a qr -n 2 -t intro')
 
-    # Add more tests here.
+    # Testing subsets of 3
+    exec_command(program, '-d COS -n 2 -a qr')
+    exec_command(program, '-d COS -n 2 -t intro')
+    exec_command(program, '-d COS -a qr -t intro')
+    exec_command(program, '-n 2 -a qr -t intro')
+
+    # Testing subsets of 2
+    exec_command(program, '-d COS -n 2')
+    exec_command(program, '-d COS -a qr')
+    exec_command(program, '-d COS -t intro')
+    exec_command(program, '-n 2 -a qr')
+    exec_command(program, '-n 2 -t intro')
+    exec_command(program, '-a qr -t intro')
+
+    # Testing subsets of 1
+    exec_command(program, '-d COS')
+    exec_command(program, '-a qr')
+    exec_command(program, '-t intro')
+    exec_command(program, '-n 2')
+
+    # Testing wildcard characters
+    exec_command(program, '-t c%S')
+    exec_command(program, '-t C_S')
+
+
 
 #-----------------------------------------------------------------------
 
