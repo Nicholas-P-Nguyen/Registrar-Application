@@ -52,6 +52,10 @@ def main():
     exec_command(program, '9012')
     # Testing class ID doesn't exist
     exec_command(program, '01010444')
+    exec_command(program, '')
+    exec_command(program, '8321 9032')
+    exec_command(program, 'abc123')
+    exec_command(program, '9032')
 
     # Testing database if reg.sqlite file doesn't exist
     shutil.copy('reg.sqlite', 'regbackup.sqlite')
