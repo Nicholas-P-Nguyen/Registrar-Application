@@ -38,9 +38,8 @@ ClsId Dept CrsNum Area Title
                        Musical Bohemias & the Politics of Subculture
  7859  AFS    200   SA Introduction to African Studies
  7863  AFS    302   SA Local Governance and Development in Africa
- 7864  AFS    303   SA Social Structure in Africa: Responses to
-                       Socio-Political and Economic Forces Since
-                       Independence
+ 7864  AFS    303   SA Social Structure in Africa: Responses to Socio-
+                       Political and Economic Forces Since Independence
  7865  AFS    375   SA Science, Technology, and African Development
  7867  AMS    311   LA Uncreative Writing
  7840  AMS    321   SA The Black Melting Pot: Interrogating Race,
@@ -217,7 +216,7 @@ ClsId Dept CrsNum Area Title
  8024  AST    203   QR The Universe
  8025  AST    204   QR Topics in Modern Astronomy
  8865  AST    255   QR Life in the Universe
- 8026  AST    309      Science and Technology of Nuclear Energy: 
+ 8026  AST    309      Science and Technology of Nuclear Energy:
                        Fission and Fusion
  8027  AST    401      Cosmology
  8028  AST    517      Diffuse Matter in Space
@@ -391,9 +390,9 @@ ClsId Dept CrsNum Area Title
  8221  CHM    536      Topics in Organic Chemistry: Methods for Complex
                        Organic Synthesis
  8222  CHM    539      Introduction to Chemical Instrumentation
- 8223  CHM    543      Advanced Topics in Structural Biology:
-                       Neuro-developmental Disorders from a Molecular
-                       Point of View
+ 8223  CHM    543      Advanced Topics in Structural Biology: Neuro-
+                       developmental Disorders from a Molecular Point of
+                       View
  8224  CHM    544      Metals in Biology
  9457  CHV    202   EM Introduction to Moral Philosophy
  8231  CHV    214   EM The Other Side of Rome
@@ -1329,7 +1328,7 @@ ClsId Dept CrsNum Area Title
  9146  MAE    224   ST Integrated Engineering Science Laboratory
  9147  MAE    305   QR Mathematics in Engineering I
  9148  MAE    306      Mathematics in Engineering II
- 8026  MAE    309      Science and Technology of Nuclear Energy: 
+ 8026  MAE    309      Science and Technology of Nuclear Energy:
                        Fission and Fusion
  9155  MAE    322      Mechanical Design
  9156  MAE    328      Energy for a Greenhouse-Constrained World
@@ -1688,7 +1687,7 @@ ClsId Dept CrsNum Area Title
  9038  PHY    236      An Integrated, Quantitative Introduction to the
                        Natural Sciences IV
  9573  PHY    304      Advanced Electromagnetism
- 8026  PHY    309      Science and Technology of Nuclear Energy: 
+ 8026  PHY    309      Science and Technology of Nuclear Energy:
                        Fission and Fusion
  9576  PHY    312   ST Experimental Physics
  8027  PHY    401      Cosmology
@@ -1786,8 +1785,8 @@ ClsId Dept CrsNum Area Title
  9735  POL    595      Research Seminar
  9736  POL    596      Research Seminar
  9737  POL    597      Research Seminars
-10246  POL    598      Politics of Inequality and Redistribution
-                       (Half-Term)
+10246  POL    598      Politics of Inequality and Redistribution (Half-
+                       Term)
  9738  POP    503      Evaluation of Demographic Research
 10237  POP    504      Poverty, Inequality and Health in the World
 10264  POP    508      Epidemiology
@@ -1832,7 +1831,7 @@ ClsId Dept CrsNum Area Title
  9137  PSY    430   EC Cognitive Linguistics
 10192  PSY    463   SA Special Topics in Public Affairs: Political
                        Psychology
- 9835  PSY    500      Proseminar in Basic Problems in Psychology: 
+ 9835  PSY    500      Proseminar in Basic Problems in Psychology:
                        Social Psychology
  9414  PSY    511      Current Issues in Neuroscience and Behavior
  9836  PSY    543      Research Seminar in Cognitive Psychology
@@ -2281,8 +2280,8 @@ ClsId Dept CrsNum Area Title
 10244  WWS   586F      Topics in STEP: Information Technology and Public
                        Policy
 10245  WWS    587      Research Workshop in Population
-10246  WWS   590B      Politics of Inequality and Redistribution
-                       (Half-Term)
+10246  WWS   590B      Politics of Inequality and Redistribution (Half-
+                       Term)
 10247  WWS   590C      Sociological Studies of Inequality(Half -Term)
 10248  WWS   594A      Topics in Policy Analysis (Half-Term): Evolution
                        & Reform of the Int'l Monetary System

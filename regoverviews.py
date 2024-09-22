@@ -2,6 +2,7 @@ import contextlib
 import sqlite3
 import argparse
 import sys
+import textwrap
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
 # End of the escape clause -> '\'
@@ -13,11 +14,9 @@ def print_table(table):
     for row in table:
         line = (f"{row[0]:>5} {row[1]:>4} {row[2]:>6} "
                 f"{row[3]:>4} {row[4]:<}")
-        while len(line) > 72:
-            break_index = line.rfind(' ', 0, 73)
-            print(line[:break_index])
-            line = ' ' * 23 + line[break_index + 1:]
-        print(line)
+        line_arr = textwrap.wrap(line, width = 72, subsequent_indent= f'{' ' * 23}')
+        for l in line_arr:
+            print(l)
 
 #-----------------------------------------------------------------------
 
