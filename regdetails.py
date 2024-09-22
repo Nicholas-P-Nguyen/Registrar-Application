@@ -2,15 +2,14 @@ import contextlib
 import sqlite3
 import argparse
 import sys
+import textwrap
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
 
 def printCourseDetails(description):
-    while len(description) > 72:
-        break_index = description.rfind(' ', 0, 73)
-        print(description[:break_index])
-        description = ' ' * 3 + description[break_index + 1:]
-    print(description)
+    description_arr = textwrap.wrap(description, width = 72, subsequent_indent= f'{' ' * 3}')
+    for d in description_arr:
+        print(d)
 
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -35,14 +34,17 @@ def getCourseDetails(classId, cursor):
     stmt_str_course += "AND classes.courseid = courses.courseid "
 
     course_fields = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
+    course_fields_no_space = ['Area:', 'Title:', 'Description:', 'Prerequisites:']
     cursor.execute(stmt_str_course, [classId])
     row = cursor.fetchone()
 
     for i in range(len(row)):
-        if len(course_fields[i] + row[i]) > 72:
+        if row[i] == "":
+            print(course_fields_no_space[i])
+        elif len(course_fields[i] + row[i]) > 72:
             printCourseDetails(course_fields[i] + row[i])
         else:
-            print(course_fields[i] + row[i])
+            print(course_fields[i] + row[i]) #maybe comma?
 
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -69,7 +71,7 @@ def getClassDetails(classId, cursor):
     row = cursor.fetchone()
 
     if row is None:
-        print(f"{sys.argv[0]}: ref_regdetails.pyc: no class with classid {classId} exists", file=sys.stderr)
+        print(f"{sys.argv[0]}: no class with classid {classId} exists", file=sys.stderr)
         sys.exit(1)
 
     print('-------------')

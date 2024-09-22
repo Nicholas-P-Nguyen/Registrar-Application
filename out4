@@ -184,3 +184,7 @@ Description: To provide the basis for acquiring a command of written and
    spoken Modern Greek.
 Prerequisites: HLS 101 or equivalent, or permission of instructor.
 Exit status = 0
+------------------------------------------------------------------------
+python regdetails.py 01010444
+regdetails.py: no class with classid 1010444 exists
+Exit status = 1

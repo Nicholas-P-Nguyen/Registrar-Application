@@ -14,9 +14,9 @@ Course Details
 --------------
 Course Id: 3672
 Dept and Number: COS 333
-Area: 
+Area:
 Title: Advanced C%Science Programming Techniques
-Description: This is a course about the practice of programming. 
+Description: This is a course about the practice of programming.
    Programming is more than just writing code.  Programmers must also
    assess tradeoffs, choose among design alternatives, debug and test,
    improve performance, and maintain software written by themselves &
@@ -94,7 +94,7 @@ Description: An introduction to computer science in the context of
    structures; fundamental principles of computation; and scientific
    computing, including simulation, optimization, and data analysis. Two
    lectures, two precepts.
-Prerequisites: 
+Prerequisites:
 Professor: Larry L. Peterson
 Exit status = 0
 ------------------------------------------------------------------------
@@ -146,7 +146,7 @@ Course Details
 --------------
 Course Id: 4554
 Dept and Number: WWS 402
-Area: 
+Area:
 Title: Policy Seminars
 Description: In policy seminars students work in groups first
    formulating the general problem, then engaging in individual research
@@ -178,9 +178,13 @@ Course Details
 Course Id: 4017
 Dept and Number: HLS 102
 Dept and Number: MOG 102
-Area: 
+Area:
 Title: Elementary Modern Greek II
 Description: To provide the basis for acquiring a command of written and
    spoken Modern Greek.
 Prerequisites: HLS 101 or equivalent, or permission of instructor.
 Exit status = 0
+------------------------------------------------------------------------
+python regdetails.py 01010444
+regdetails.py: no class with classid 1010444 exists
+Exit status = 1
