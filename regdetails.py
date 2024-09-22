@@ -6,56 +6,59 @@ import textwrap
 
 DATABASE_URL = 'file:reg.sqlite?mode=rw'
 
-def printCourseDetails(description):
-    description_arr = textwrap.wrap(description, width = 72, subsequent_indent= f'{' ' * 3}')
+def print_course_details(description):
+    description_arr = textwrap.wrap(description, width = 72,
+                                    subsequent_indent= f'{' ' * 3}')
     for d in description_arr:
         print(d)
 
 #-----------------------------------------------------------------------
 
-def getCourseDeptAndNum(classId, cursor):
+def get_course_dept_and_num(class_id, cursor):
     stmt_str_dept = "SELECT dept, coursenum "
     stmt_str_dept += "FROM classes, crosslistings "
     stmt_str_dept += "WHERE classid = ? "
     stmt_str_dept += "AND classes.courseid = crosslistings.courseid "
     stmt_str_dept += "ORDER BY dept ASC, coursenum ASC"
 
-    cursor.execute(stmt_str_dept, [classId])
+    cursor.execute(stmt_str_dept, [class_id])
     table = cursor.fetchall()
     for row in table:
         print(f'Dept and Number: {row[0]} {row[1]}')
 
 #-----------------------------------------------------------------------
 
-def getCourseDetails(classId, cursor):
+def get_course_details(class_id, cursor):
     stmt_str_course = "SELECT area, title, descrip, prereqs "
     stmt_str_course += "FROM classes, courses "
     stmt_str_course += "WHERE classid = ? "
     stmt_str_course += "AND classes.courseid = courses.courseid "
 
-    course_fields = ['Area: ', 'Title: ', 'Description: ', 'Prerequisites: ']
-    course_fields_no_space = ['Area:', 'Title:', 'Description:', 'Prerequisites:']
-    cursor.execute(stmt_str_course, [classId])
+    course_fields = ['Area: ', 'Title: ', 'Description: ',
+                     'Prerequisites: ']
+    course_fields_no_space = ['Area:', 'Title:', 'Description:',
+                              'Prerequisites:']
+    cursor.execute(stmt_str_course, [class_id])
     row = cursor.fetchone()
 
-    for i in range(len(row)):
+    for i, _ in enumerate(row):
         if row[i] == "":
             print(course_fields_no_space[i])
         elif len(course_fields[i] + row[i]) > 72:
-            printCourseDetails(course_fields[i] + row[i])
+            print_course_details(course_fields[i] + row[i])
         else:
-            print(course_fields[i] + row[i]) #maybe comma?
+            print(course_fields[i] + row[i])
 
 #-----------------------------------------------------------------------
 
-def getCourseProfs(classId, cursor):
+def get_course_profs(class_id, cursor):
     stmt_str_prof = "SELECT profname "
     stmt_str_prof += "FROM classes, coursesprofs, profs "
     stmt_str_prof += "WHERE classid = ? "
     stmt_str_prof += "AND classes.courseid = coursesprofs.courseid "
     stmt_str_prof += "AND coursesprofs.profid = profs.profid "
 
-    cursor.execute(stmt_str_prof, [classId])
+    cursor.execute(stmt_str_prof, [class_id])
     table = cursor.fetchall()
 
     for row in table:
@@ -63,24 +66,28 @@ def getCourseProfs(classId, cursor):
 
 #-----------------------------------------------------------------------
 
-def getClassDetails(classId, cursor):
-    stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
+def get_class_details(class_id, cursor):
+    stmt_str = ("SELECT classid, days, starttime, endtime, bldg, "
+                "roomnum, courseid ")
     stmt_str += "FROM classes WHERE classid = ?"
 
-    cursor.execute(stmt_str, [classId])
+    cursor.execute(stmt_str, [class_id])
     row = cursor.fetchone()
 
     if row is None:
-        print(f"{sys.argv[0]}: no class with classid {classId} exists", file=sys.stderr)
+        print(f"{sys.argv[0]}: no class with classid "
+              f"{class_id} exists", file=sys.stderr)
         sys.exit(1)
 
     print('-------------')
     print('Class Details')
     print('-------------')
 
-    class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:', 'Building:', 'Room:']
-    for i in range(len(class_fields)):
-        print(class_fields[i], row[i])
+    class_fields = ['Class Id:', 'Days:', 'Start time:', 'End time:',
+                    'Building:', 'Room:']
+
+    for field, value in zip(class_fields, row):
+        print(field, value)
 
     print('--------------')
     print('Course Details')
@@ -91,17 +98,22 @@ def getClassDetails(classId, cursor):
 
 def main():
     try:
-        with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
+        with sqlite3.connect(DATABASE_URL, isolation_level=None,
+                             uri=True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
                 # Help menu
-                parser = argparse.ArgumentParser(description='Registrar application: show details about a class')
-                parser.add_argument('classid', type=int, help='the id of the class whose details should be shown')
+                parser = argparse.ArgumentParser(
+                    description='Registrar application: show '
+                                'details about a class')
+                parser.add_argument('classid', type=int,
+                                    help='the id of the class whose '
+                                         'details should be shown')
                 args = parser.parse_args()
 
-                getClassDetails(args.classid, cursor)
-                getCourseDeptAndNum(args.classid, cursor)
-                getCourseDetails(args.classid, cursor)
-                getCourseProfs(args.classid, cursor)
+                get_class_details(args.classid, cursor)
+                get_course_dept_and_num(args.classid, cursor)
+                get_course_details(args.classid, cursor)
+                get_course_profs(args.classid, cursor)
 
     except sqlite3.OperationalError as op_ex:
         print(sys.argv[0] + ":", op_ex, file=sys.stderr)
@@ -113,7 +125,7 @@ def main():
         print(ex, file=sys.stderr)
         sys.exit(1)
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 if __name__ == '__main__':
     main()
