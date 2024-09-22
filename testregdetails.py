@@ -6,6 +6,7 @@
 #-----------------------------------------------------------------------
 
 import os
+import shutil
 import sys
 
 #-----------------------------------------------------------------------
@@ -49,7 +50,20 @@ def main():
     exec_command(program, '9977')
     exec_command(program, '10188')
     exec_command(program, '9012')
+    # Testing class ID doesn't exist
     exec_command(program, '01010444')
+
+    # Testing database if reg.sqlite file doesn't exist
+    shutil.copy('reg.sqlite', 'regbackup.sqlite')
+    os.remove('reg.sqlite')
+    exec_command(program, '9012')
+    shutil.copy('regbackup.sqlite', 'reg.sqlite')
+
+    # Testing database if its flawed
+    shutil.copy('reg.sqlite', 'regbackup.sqlite')
+    shutil.copy('regflawed.sqlite', 'reg.sqlite')
+    exec_command(program, '8321')
+    shutil.copy('regbackup.sqlite', 'reg.sqlite')
 
 
 if __name__ == '__main__':

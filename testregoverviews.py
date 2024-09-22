@@ -6,12 +6,16 @@
 #-----------------------------------------------------------------------
 
 import os
+import shutil
 import sys
+import sqlite3
+import contextlib
 
 #-----------------------------------------------------------------------
 
 MAX_LINE_LENGTH = 72
 UNDERLINE = '-' * MAX_LINE_LENGTH
+DATABASE_URL = 'file:reg.sqlite?mode=rw'
 
 #-----------------------------------------------------------------------
 
@@ -69,6 +73,34 @@ def main():
     # Testing wildcard characters
     exec_command(program, '-t c%S')
     exec_command(program, '-t C_S')
+
+    exec_command(program, 'a qr')
+    exec_command(program, '-A qr')
+    exec_command(program, '"-a " qr')
+    exec_command(program, '-a qr st')
+    exec_command(program, '-a')
+    exec_command(program, '-a qr -d')
+    exec_command(program, '-a -d cos')
+    exec_command(program, '-x')
+
+    # Testing database if reg.sqlite file doesn't exist
+    shutil.copy('reg.sqlite', 'regbackup.sqlite')
+    os.remove('reg.sqlite')
+
+    exec_command(program, '-d COS')
+    exec_command(program, '-d COS -a qr -n 2 -t intro')
+
+    shutil.copy('regbackup.sqlite', 'reg.sqlite')
+
+    # Testing database if its flawed
+    shutil.copy('reg.sqlite', 'regbackup.sqlite')
+    shutil.copy('regflawed.sqlite', 'reg.sqlite')
+
+    exec_command(program, '-d COS')
+    exec_command(program, '-d COS -a qr -n 2 -t intro')
+
+    shutil.copy('regbackup.sqlite', 'reg.sqlite')
+
 
 
 

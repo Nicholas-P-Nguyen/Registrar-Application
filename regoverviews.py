@@ -70,20 +70,27 @@ def main():
                 parser.add_argument('-t', type=str, metavar='title', help='show only those classes whose course title contains title')
                 args = parser.parse_args()
 
-                print(f"{'ClsId':<5} {'Dept':<4} {'CrsNum':<6} {'Area':<4} {'Title':<5}")
-                print(f"{'-' * 5} {'-' * 4} {'-' * 6} {'-' * 4} {'-' * 5}")
 
                 stmt_str = "SELECT classid, dept, coursenum, area, title "
-                stmt_str += "FROM classes, crosslistings, courses "
+                stmt_str += "FROM courses, classes, crosslistings "
                 stmt_str += "WHERE courses.courseid = classes.courseid "
                 stmt_str += "AND courses.courseid = crosslistings.courseid "
 
                 stmt_str, parameters = process_arguments(stmt_str, args.d, args.n, args.a, args.t)
 
                 cursor.execute(stmt_str, parameters)
+
+                print(f"{'ClsId':<5} {'Dept':<4} {'CrsNum':<6} {'Area':<4} {'Title':<5}")
+                print(f"{'-' * 5} {'-' * 4} {'-' * 6} {'-' * 4} {'-' * 5}")
                 table = cursor.fetchall()
                 print_table(table)
 
+    except sqlite3.OperationalError as op_ex:
+        print(sys.argv[0] + ":", op_ex, file=sys.stderr)
+        sys.exit(1)
+    except sqlite3.DatabaseError as db_ex:
+        print(sys.argv[0] + ":", db_ex, file=sys.stderr)
+        sys.exit(1)
     except Exception as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)

@@ -188,3 +188,11 @@ Exit status = 0
 python regdetails.py 01010444
 regdetails.py: no class with classid 1010444 exists
 Exit status = 1
+------------------------------------------------------------------------
+python regdetails.py 9012
+regdetails.py: unable to open database file
+Exit status = 1
+------------------------------------------------------------------------
+python regdetails.py 8321
+regdetails.py: no such table: classes
+Exit status = 1

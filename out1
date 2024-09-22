@@ -3787,3 +3787,59 @@ ClsId Dept CrsNum Area Title
 ----- ---- ------ ---- -----
  8308  COS    217   QR Introduction to C_Science Programming Systems
 Exit status = 0
+------------------------------------------------------------------------
+python regoverviews.py a qr
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: unrecognized arguments: a qr
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -A qr
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: unrecognized arguments: -A qr
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py "-a " qr
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: unrecognized arguments: qr
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -a qr st
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: unrecognized arguments: st
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -a
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: argument -a: expected one argument
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -a qr -d
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: argument -d: expected one argument
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -a -d cos
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: argument -a: expected one argument
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -x
+usage: regoverviews.py [-h] [-d dept] [-n num] [-a area] [-t title]
+regoverviews.py: error: unrecognized arguments: -x
+Exit status = 2
+------------------------------------------------------------------------
+python regoverviews.py -d COS
+regoverviews.py: unable to open database file
+Exit status = 1
+------------------------------------------------------------------------
+python regoverviews.py -d COS -a qr -n 2 -t intro
+regoverviews.py: unable to open database file
+Exit status = 1
+------------------------------------------------------------------------
+python regoverviews.py -d COS
+regoverviews.py: no such table: courses
+Exit status = 1
+------------------------------------------------------------------------
+python regoverviews.py -d COS -a qr -n 2 -t intro
+regoverviews.py: no such table: courses
+Exit status = 1

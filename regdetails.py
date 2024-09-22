@@ -11,7 +11,7 @@ def printCourseDetails(description):
     for d in description_arr:
         print(d)
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 def getCourseDeptAndNum(classId, cursor):
     stmt_str_dept = "SELECT dept, coursenum "
@@ -25,7 +25,7 @@ def getCourseDeptAndNum(classId, cursor):
     for row in table:
         print(f'Dept and Number: {row[0]} {row[1]}')
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 def getCourseDetails(classId, cursor):
     stmt_str_course = "SELECT area, title, descrip, prereqs "
@@ -46,7 +46,7 @@ def getCourseDetails(classId, cursor):
         else:
             print(course_fields[i] + row[i]) #maybe comma?
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 def getCourseProfs(classId, cursor):
     stmt_str_prof = "SELECT profname "
@@ -61,7 +61,7 @@ def getCourseProfs(classId, cursor):
     for row in table:
         print(f'Professor: {row[0]}')
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 def getClassDetails(classId, cursor):
     stmt_str = "SELECT classid, days, starttime, endtime, bldg, roomnum, courseid "
@@ -87,7 +87,7 @@ def getClassDetails(classId, cursor):
     print('--------------')
     print('Course Id:', row[6])
 
-#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------
 
 def main():
     try:
@@ -103,6 +103,12 @@ def main():
                 getCourseDetails(args.classid, cursor)
                 getCourseProfs(args.classid, cursor)
 
+    except sqlite3.OperationalError as op_ex:
+        print(sys.argv[0] + ":", op_ex, file=sys.stderr)
+        sys.exit(1)
+    except sqlite3.DatabaseError as db_ex:
+        print(sys.argv[0] + ":", db_ex, file=sys.stderr)
+        sys.exit(1)
     except Exception as ex:
         print(ex, file=sys.stderr)
         sys.exit(1)
