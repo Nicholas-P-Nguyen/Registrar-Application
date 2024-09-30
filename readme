@@ -4,7 +4,7 @@ David Beeson - db0197
 In this assignment, we were both responsible for ensuring that we
 understood the problem statement and what we needed to do.
 Most of the time we were together and writing code together, so
-it's hard to determine how contributed what, but I helped
+it's hard to determine who contributed to what, but I helped
 modularized the code once we got the core functions and
 capabilities correct. I also helped with writing the test cases.
 
@@ -21,4 +21,12 @@ The time spent doing this assignment is about 10-15 hours
 
 This assignment was truly helpful in teaching me about SQL, this was
 my first time learning about SQL and I think the assignment did
-a great job at teaching me the basics of SQL and its syntaxes.
+a great job at teaching me the basics of SQL and its syntaxes
+
+David:
+This assignment helped familiarize me with python program writing and testing,
+as I have only had experince in python jupyter notebooks where testing is easy,
+and composing a coherent larger program is harder. I think the assignment helped us
+both to learn and understand the SQL procedure better than our previous knowledge, 
+and helped me to understand the testing and debugging process after a semester and 
+summer removed from doing that in COS 217.
